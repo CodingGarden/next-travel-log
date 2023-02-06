@@ -1,6 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { TravelLog, TravelLogs, TravelLogWithId } from '@/models/TravelLogs';
+import {
+  TravelLog,
+  TravelLogs,
+  TravelLogWithId,
+} from '@/models/TravelLog/TravelLogs';
 
 export default async function handler(
   req: NextApiRequest,
