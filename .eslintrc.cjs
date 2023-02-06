@@ -8,4 +8,7 @@ module.exports = {
     'airbnb-typescript',
     'plugin:prettier/recommended',
   ],
+  rules: {
+    'no-underscore-dangle': 0,
+  },
 };
