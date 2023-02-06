@@ -38,5 +38,6 @@
     "eslint-plugin-prettier": "^4.2.1",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.2.4"
-  }
+  },
+  "license": "MIT"
 }
