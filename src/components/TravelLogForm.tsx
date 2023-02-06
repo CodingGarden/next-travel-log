@@ -1,6 +1,7 @@
 'use client';
 
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TravelLog, TravelLogProperty } from '@/models/TravelLog/TravelLog';
 
@@ -42,6 +43,7 @@ const nowString = `${now.getFullYear()}-${padNum(now.getMonth() + 1)}-${padNum(
 )}`;
 
 export default function TravelLogForm() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -68,12 +70,13 @@ export default function TravelLogForm() {
     });
     const json = await response.json();
     console.log(json);
+    router.push('/');
     // TODO: refresh list of travel logs
     // TODO: handle form submission errors
   };
   return (
     <form
-      className="mx-auto max-w-md flex gap-4 flex-col"
+      className="mx-auto max-w-md flex gap-4 flex-col my-4"
       onSubmit={handleSubmit(onSubmit)}
     >
       {Object.entries(travelLogInputs).map(([name, value]) => {
@@ -81,7 +84,9 @@ export default function TravelLogForm() {
         return (
           <div key={name} className="form-control w-full">
             <label className="label">
-              <span className="label-text">{name}</span>
+              <span className="label-text capitalize">
+                {value.label || name}
+              </span>
             </label>
             {value.type === 'textarea' ? (
               <textarea
