@@ -7,7 +7,7 @@ import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
 import type { TravelLogWithId } from '@/models/TravelLog/TravelLogs';
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 
 const DefaultIcon = L.icon({
   iconUrl: icon.src,
@@ -24,22 +24,30 @@ interface TravelLogMapProps {
 
 const InitMap = ({ logs }: TravelLogMapProps) => {
   const map = useMap();
-  useEffect(() => {
+  useLayoutEffect(() => {
     map.invalidateSize();
-    const bounds = new L.LatLngBounds(
-      logs.map((log) => [log.latitude, log.longitude])
-    );
-    map.fitBounds(bounds);
+    if (logs.length) {
+      const bounds = new L.LatLngBounds(
+        logs.map((log) => [log.latitude, log.longitude])
+      );
+      map.fitBounds(bounds);
+    } else {
+      map.setZoom(3);
+      map.setView([34.85480922648911, -41.89881501280613]);
+    }
   }, [map, logs]);
   return null;
 };
 
 export default function TravelLogMap({ logs }: TravelLogMapProps) {
+  if (!process.env.NEXT_PUBLIC_MAP_TILE_URL) {
+    throw new Error('Missing NEXT_PUBLIC_MAP_TILE_URL in .env.local');
+  }
   return (
-    <MapContainer className="w-full h-full">
+    <MapContainer className="w-full h-full" style={{ background: '#242525' }}>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://api.mapbox.com/styles/v1/codinggarden/cl84ukoao000p16o8u4zibr8d/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiY29kaW5nZ2FyZGVuIiwiYSI6ImNsODR1NThpajBmaGYzd29ldGk2aTI0YjUifQ.jLrb9oKppUiYkfLGCyYMhA"
+        url={process.env.NEXT_PUBLIC_MAP_TILE_URL}
       />
       <InitMap logs={logs} />
       {logs.map((log) => (
