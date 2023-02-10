@@ -25,16 +25,19 @@ interface TravelLogMapProps {
 const InitMap = ({ logs }: TravelLogMapProps) => {
   const map = useMap();
   useLayoutEffect(() => {
-    map.invalidateSize();
-    if (logs.length) {
-      const bounds = new L.LatLngBounds(
-        logs.map((log) => [log.latitude, log.longitude])
-      );
-      map.fitBounds(bounds);
-    } else {
-      map.setZoom(3);
-      map.setView([34.85480922648911, -41.89881501280613]);
-    }
+    setTimeout(() => {
+      map.invalidateSize();
+      if (logs.length) {
+        const bounds = new L.LatLngBounds(
+          logs.map((log) => [log.latitude, log.longitude])
+        );
+        map.fitBounds(bounds);
+      } else {
+        map.setZoom(3);
+        map.setView([34.85480922648911, -41.89881501280613]);
+      }
+      // TODO: less hacky way...
+    }, 200);
   }, [map, logs]);
   return null;
 };
