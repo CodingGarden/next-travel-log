@@ -89,6 +89,10 @@ export default function TravelLogForm({
       });
       if (response.ok) {
         router.push('/');
+        dispatch({
+          type: TravelLogActionType.SET_CURRENT_MARKER_LOCATION,
+          data: null,
+        });
         reset();
         onComplete();
       } else {
@@ -113,7 +117,7 @@ export default function TravelLogForm({
             onCancel();
             reset();
           }}
-          className="btn btn-error"
+          className="btn btn-secondary"
         >
           CANCEL
         </button>

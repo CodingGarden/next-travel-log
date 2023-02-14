@@ -16,7 +16,7 @@
   * [x] Click on map to choose latitude / longitude
   * [x] Re-load map after create
   * [x] Show server errors in form
-* [ ] Update Travel Log Icon
+* [x] Update Travel Log Icon
 * [ ] Zod Validators
   * Serialization / Deserialization
   * Timestamp
@@ -25,6 +25,7 @@
 * [ ] Edit existing log
 * [ ] Lock down with a api key
 * [ ] Config object loader with validation
+* [ ] Cluster close points
 * [ ] DEPLOY!
   * [ ] Vercel
   * [ ] Mongo Atlas
@@ -36,6 +37,8 @@
 
 # Stretch
 
+* Change size of selected icon...
+* Set places you want to visit
 * Use Prisma
 * Multiple at same location???
 * Next Auth...

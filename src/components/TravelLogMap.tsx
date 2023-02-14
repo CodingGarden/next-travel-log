@@ -3,8 +3,6 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
 import type { TravelLogWithId } from '@/models/TravelLog/TravelLogs';
 import { useCallback, useContext, useLayoutEffect } from 'react';
@@ -18,14 +16,18 @@ if (!process.env.NEXT_PUBLIC_MAP_TILE_URL) {
   throw new Error('Missing NEXT_PUBLIC_MAP_TILE_URL in .env.local');
 }
 
-const DefaultIcon = L.icon({
-  iconUrl: icon.src,
-  shadowUrl: iconShadow.src,
-  iconSize: [25, 41],
-  iconAnchor: [25 / 2, 41],
-});
+const createIcon = (fill = '#56BC58', iconSize = 32) => {
+  return L.divIcon({
+    className: 'bg-transparent',
+    html: `<svg viewBox="0 0 24 24" width="${iconSize}" height="${iconSize}" fill="${fill}" stroke="black" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="shadow-xl"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>`,
+    iconSize: [iconSize, iconSize],
+    iconAnchor: [iconSize / 2, iconSize],
+  });
+};
 
-L.Marker.prototype.options.icon = DefaultIcon;
+L.Marker.prototype.options.icon = createIcon();
+
+const currentMarkerIcon = createIcon('#F2BB05', 40);
 
 interface TravelLogMapProps {
   logs: TravelLogWithId[];
@@ -90,6 +92,7 @@ export default function TravelLogMap({ logs }: TravelLogMapProps) {
       <InitMap logs={logs} dispatch={dispatch} onMapClick={onMapClick} />
       {state.currentMarkerLocation && (
         <Marker
+          icon={currentMarkerIcon}
           eventHandlers={{
             dragend(e) {
               dispatch({
@@ -107,7 +110,7 @@ export default function TravelLogMap({ logs }: TravelLogMapProps) {
           key={log._id.toString()}
           position={[log.latitude, log.longitude]}
         >
-          <Popup offset={[0, -32]}>
+          <Popup offset={[0, -10]}>
             <p className="text-lg font-bold">{log.title}</p>
             <div className="flex justify-center items-center">
               <img alt={log.title} src={log.image} className="w-96" />
