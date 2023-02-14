@@ -3,11 +3,17 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { TravelLog, TravelLogProperty } from '@/models/TravelLog/TravelLog';
-import { useState } from 'react';
+import {
+  TravelLog,
+  TravelLogProperty,
+  TravelLogPropertyWithoutLocation,
+} from '@/models/TravelLog/TravelLog';
+import { useContext, useEffect, useState } from 'react';
+import TravelLogContext from '@/TravelLogContext';
+import { TravelLogActionType } from '@/types/TravelLogProviderTypes';
 
 const travelLogInputs: Record<
-  TravelLogProperty,
+  TravelLogPropertyWithoutLocation,
   {
     label?: string;
     type: 'text' | 'url' | 'textarea' | 'number' | 'date';
@@ -23,12 +29,6 @@ const travelLogInputs: Record<
     type: 'url',
   },
   rating: {
-    type: 'number',
-  },
-  latitude: {
-    type: 'number',
-  },
-  longitude: {
     type: 'number',
   },
   visitDate: {
@@ -53,10 +53,12 @@ export default function TravelLogForm({
   onComplete,
 }: TravelLogFormProps) {
   const [formError, setFormError] = useState('');
+  const { state, dispatch } = useContext(TravelLogContext);
   const router = useRouter();
   const {
     register,
     handleSubmit,
+    setValue,
     reset,
     formState: { errors },
   } = useForm<TravelLog>({
@@ -65,12 +67,16 @@ export default function TravelLogForm({
       title: '',
       description: '',
       rating: 5,
-      latitude: 90,
-      longitude: 180,
+      latitude: state.currentMarkerLocation?.lat,
+      longitude: state.currentMarkerLocation?.lng,
       // @ts-ignore
       visitDate: nowString,
     },
   });
+  useEffect(() => {
+    setValue('latitude', state.currentMarkerLocation?.lat ?? 90);
+    setValue('longitude', state.currentMarkerLocation?.lng ?? 180);
+  }, [state.currentMarkerLocation, setValue]);
   const onSubmit: SubmitHandler<TravelLog> = async (data) => {
     try {
       setFormError('');
@@ -100,6 +106,10 @@ export default function TravelLogForm({
       <div className="flex justify-end">
         <button
           onClick={() => {
+            dispatch({
+              type: TravelLogActionType.SET_CURRENT_MARKER_LOCATION,
+              data: null,
+            });
             onCancel();
             reset();
           }}
@@ -162,6 +172,19 @@ export default function TravelLogForm({
             </div>
           );
         })}
+        <div className="form-control w-full">
+          <label className="label">
+            <span className="label-text capitalize">Latitude, Longitude</span>
+          </label>
+          <input
+            value={[
+              state.currentMarkerLocation?.lat.toFixed(6),
+              state.currentMarkerLocation?.lng.toFixed(6),
+            ].join(', ')}
+            className="input input-bordered w-full disabled"
+            disabled
+          />
+        </div>
         <button className="btn btn-success">Create</button>
       </form>
     </>

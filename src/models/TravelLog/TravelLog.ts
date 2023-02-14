@@ -18,6 +18,10 @@ export const TravelLog = z.object({
 
 export const TravelLogProperties = TravelLog.keyof().Enum;
 export type TravelLogProperty = keyof typeof TravelLogProperties;
+export type TravelLogPropertyWithoutLocation = Exclude<
+  TravelLogProperty,
+  'latitude' | 'longitude'
+>;
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type TravelLog = z.infer<typeof TravelLog>;

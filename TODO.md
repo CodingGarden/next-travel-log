@@ -12,12 +12,32 @@
 * [x] GET / logs
   * List all log entries
 * [x] Show Create Form as Sidebar
-* [ ] Zod Validators
-  * DB
-  * Request / POST
-* [ ] Create Form
-  * [ ] Click on map to choose latitude / longitude
+* [x] Create Form
+  * [x] Click on map to choose latitude / longitude
   * [x] Re-load map after create
   * [x] Show server errors in form
+* [ ] Update Travel Log Icon
+* [ ] Zod Validators
+  * Serialization / Deserialization
+  * Timestamp
+  * DB
+  * Request / POST
 * [ ] Edit existing log
+* [ ] Lock down with a api key
+* [ ] Config object loader with validation
 * [ ] DEPLOY!
+  * [ ] Vercel
+  * [ ] Mongo Atlas
+
+
+* [x] Say Hi
+* [x] Make a todo list
+* [x] What tech we using?
+
+# Stretch
+
+* Use Prisma
+* Multiple at same location???
+* Next Auth...
+* Search for locations
+* When adding marker, put on user current location
