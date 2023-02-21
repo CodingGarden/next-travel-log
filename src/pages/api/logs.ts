@@ -5,6 +5,7 @@ import {
   TravelLogs,
   TravelLogWithId,
 } from '@/models/TravelLog/TravelLogs';
+import LambdaRateLimiter from 'lambda-rate-limiter';
 
 if (!process.env.API_KEY) {
   throw new Error('API_KEY missing in env');
@@ -19,6 +20,13 @@ class ErrorWithStatusCode extends Error {
   }
 }
 
+const limiter = LambdaRateLimiter({
+  interval: 60000,
+  uniqueTokenPerInterval: 500,
+});
+
+const localhost = 'localhost';
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<
@@ -26,6 +34,15 @@ export default async function handler(
   >
 ) {
   try {
+    const IP = req.headers['x-real-ip']?.toString() || localhost;
+    if (IP !== localhost) {
+      try {
+        await limiter.check(20, IP);
+      } catch (error) {
+        throw new ErrorWithStatusCode('Too Many Requests.', 429);
+      }
+    }
+
     switch (req.method) {
       case 'POST': {
         if (req.body.apiKey !== process.env.API_KEY) {
@@ -35,6 +52,7 @@ export default async function handler(
         // @ts-ignore
         delete validatedLog.apiKey;
         const insertResult = await TravelLogs.insertOne(validatedLog);
+        await res.revalidate('/');
         return res.status(200).json({
           ...validatedLog,
           _id: insertResult.insertedId,

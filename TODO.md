@@ -17,18 +17,21 @@
   * [x] Re-load map after create
   * [x] Show server errors in form
 * [x] Update Travel Log Icon
+* [x] Lock down with a api key
+* [x] Rate Limit
+* [x] DEPLOY!
+  * [x] Vercel
+  * [x] Mongo Atlas
+* [ ] Loading spinner...
 * [ ] Zod Validators
   * Serialization / Deserialization
   * Timestamp
   * DB
   * Request / POST
 * [ ] Edit existing log
-* [ ] Lock down with a api key
 * [ ] Config object loader with validation
 * [ ] Cluster close points
-* [ ] DEPLOY!
-  * [ ] Vercel
-  * [ ] Mongo Atlas
+* [ ] DB timestamps... UTC??
 
 
 * [x] Say Hi
