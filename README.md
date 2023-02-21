@@ -1,13 +1,26 @@
 # Full Stack Travel Log with Next.js 13 Beta
 
-First, run the development server:
+Install dependencies
 
-```bash
+```sh
+npm install
+```
+
+Copy `.env.sample` to `.env.local`
+
+Add your own Map Tiles URL (Get one from [Leaflet-Providers](https://leaflet-extras.github.io/leaflet-providers/preview/) Notice that some of them require registration and a key) - Recommended free one: `https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png`
+
+Get MongoDB running, either locally or can create a Project and Cluster using any online provider.
+
+Update `DB_URL` and `DB_NAME` accordingly. (DB_NAME could stay with the default value)
+
+Finally run the development server:
+
+```sh
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
 
 # Tech Stack
 
