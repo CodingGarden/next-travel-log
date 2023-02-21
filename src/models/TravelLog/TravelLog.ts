@@ -4,6 +4,7 @@ const errors = {
   title: 'Title cannot be empty.',
   description: 'Description cannot be empty.',
   url: 'Image must be a valid URL.',
+  apiKey: 'API Key cannot be empty.',
 };
 
 export const TravelLog = z.object({
@@ -14,6 +15,7 @@ export const TravelLog = z.object({
   latitude: z.coerce.number().min(-90).max(90),
   longitude: z.coerce.number().min(-180).max(180),
   visitDate: z.coerce.date(),
+  apiKey: z.string().min(1, errors.apiKey),
 });
 
 export const TravelLogProperties = TravelLog.keyof().Enum;

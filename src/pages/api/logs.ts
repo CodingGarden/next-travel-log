@@ -6,6 +6,19 @@ import {
   TravelLogWithId,
 } from '@/models/TravelLog/TravelLogs';
 
+if (!process.env.API_KEY) {
+  throw new Error('API_KEY missing in env');
+}
+
+class ErrorWithStatusCode extends Error {
+  status = 500;
+
+  constructor(message: string, status: number) {
+    super(message);
+    this.status = status;
+  }
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<
@@ -15,7 +28,12 @@ export default async function handler(
   try {
     switch (req.method) {
       case 'POST': {
+        if (req.body.apiKey !== process.env.API_KEY) {
+          throw new ErrorWithStatusCode('Unauthorized.', 401);
+        }
         const validatedLog = await TravelLog.parseAsync(req.body);
+        // @ts-ignore
+        delete validatedLog.apiKey;
         const insertResult = await TravelLogs.insertOne(validatedLog);
         return res.status(200).json({
           ...validatedLog,
@@ -27,12 +45,17 @@ export default async function handler(
         return res.status(200).json(logs);
       }
       default: {
-        return res.status(405).json({ message: 'Not Supported' });
+        throw new ErrorWithStatusCode('Not Supported.', 405);
       }
     }
   } catch (e) {
     const error = e as Error;
-    return res.status(500).json({
+    if (error instanceof ErrorWithStatusCode) {
+      res.status(error.status);
+    }
+    // TODO: handle zod errors
+    // TODO: handle all errors in catch all middleware
+    return res.json({
       message: error.message,
     });
   }

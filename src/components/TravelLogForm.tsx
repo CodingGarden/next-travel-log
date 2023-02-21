@@ -16,9 +16,13 @@ const travelLogInputs: Record<
   TravelLogPropertyWithoutLocation,
   {
     label?: string;
-    type: 'text' | 'url' | 'textarea' | 'number' | 'date';
+    type: 'text' | 'url' | 'textarea' | 'number' | 'date' | 'password';
   }
 > = {
+  apiKey: {
+    label: 'API Key',
+    type: 'password',
+  },
   title: {
     type: 'text',
   },
@@ -71,6 +75,7 @@ export default function TravelLogForm({
       longitude: state.currentMarkerLocation?.lng,
       // @ts-ignore
       visitDate: nowString,
+      apiKey: localStorage.getItem('apiKey') ?? '',
     },
   });
   useEffect(() => {
@@ -88,6 +93,7 @@ export default function TravelLogForm({
         body: JSON.stringify(data),
       });
       if (response.ok) {
+        localStorage.setItem('apiKey', data.apiKey);
         router.push('/');
         dispatch({
           type: TravelLogActionType.SET_CURRENT_MARKER_LOCATION,

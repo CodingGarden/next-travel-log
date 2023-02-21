@@ -10,6 +10,7 @@ export default function Head() {
         name="description"
         content="Keep track of all the places you have been"
       />
+      {/* TODO: add other icons... */}
       <link rel="icon" href="/favicon.ico" />
     </>
   );
