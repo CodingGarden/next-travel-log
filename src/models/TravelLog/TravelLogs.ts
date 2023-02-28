@@ -1,10 +1,10 @@
 import db from '@/db';
 import { WithId } from 'mongodb';
 
-import { TravelLog } from './TravelLog';
+import { TravelLogEntry } from './TravelLog';
 
-export { TravelLog };
+export { TravelLogEntry };
 
-export type TravelLogWithId = WithId<TravelLog>;
+export type TravelLogWithObjectId = WithId<TravelLogEntry>;
 
-export const TravelLogs = db.collection<TravelLog>('logs');
+export const TravelLogs = db.collection<TravelLogEntry>('logs');

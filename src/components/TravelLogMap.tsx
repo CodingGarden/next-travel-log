@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-import type { TravelLogWithId } from '@/models/TravelLog/TravelLogs';
+import type { TravelLogEntryWithId } from '@/models/TravelLog/TravelLog';
 import { useCallback, useContext, useLayoutEffect } from 'react';
 import TravelLogContext from '@/TravelLogContext';
 import {
@@ -30,11 +30,11 @@ L.Marker.prototype.options.icon = createIcon();
 const currentMarkerIcon = createIcon('#F2BB05', 40);
 
 interface TravelLogMapProps {
-  logs: TravelLogWithId[];
+  logs: TravelLogEntryWithId[];
 }
 
 interface InitMapProps {
-  logs: TravelLogWithId[];
+  logs: TravelLogEntryWithId[];
   onMapClick: (event: L.LeafletMouseEvent) => void;
   dispatch: TravelLogDispatch;
 }
@@ -84,7 +84,11 @@ export default function TravelLogMap({ logs }: TravelLogMapProps) {
     [state.map, dispatch]
   );
   return (
-    <MapContainer worldCopyJump={true} className="w-full h-full" style={{ background: '#242525' }}>
+    <MapContainer
+      worldCopyJump={true}
+      className="w-full h-full"
+      style={{ background: '#242525' }}
+    >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url={process.env.NEXT_PUBLIC_MAP_TILE_URL || ''}
@@ -113,11 +117,13 @@ export default function TravelLogMap({ logs }: TravelLogMapProps) {
           <Popup offset={[0, -10]}>
             <p className="text-lg font-bold">{log.title}</p>
             <div className="flex justify-center items-center">
-              <img alt={log.title} src={log.image} className="w-96" />
+              <picture>
+                <img alt={log.title} src={log.image} className="w-96" />
+              </picture>
             </div>
             <p>{log.description}</p>
             <p className="text-sm italic">
-              {new Date(log.visitDate.toString()).toLocaleDateString()}
+              {new Date(log.visitDate).toLocaleDateString()}
             </p>
           </Popup>
         </Marker>

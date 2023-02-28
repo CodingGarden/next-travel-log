@@ -3,8 +3,9 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import formatDate from 'date-fns/format';
 import {
-  TravelLog,
+  TravelLogRequest,
   TravelLogProperty,
   TravelLogPropertyWithoutLocation,
 } from '@/models/TravelLog/TravelLog';
@@ -41,11 +42,7 @@ const travelLogInputs: Record<
   },
 };
 
-const now = new Date();
-const padNum = (input: number) => input.toString().padStart(2, '0');
-const nowString = `${now.getFullYear()}-${padNum(now.getMonth() + 1)}-${padNum(
-  now.getDate()
-)}`;
+const nowString = formatDate(new Date(), 'yyyy-MM-dd');
 
 interface TravelLogFormProps {
   onComplete: () => void;
@@ -65,15 +62,14 @@ export default function TravelLogForm({
     setValue,
     reset,
     formState: { errors },
-  } = useForm<TravelLog>({
-    resolver: zodResolver(TravelLog),
+  } = useForm<TravelLogRequest>({
+    resolver: zodResolver(TravelLogRequest),
     defaultValues: {
       title: '',
       description: '',
       rating: 5,
       latitude: state.currentMarkerLocation?.lat,
       longitude: state.currentMarkerLocation?.lng,
-      // @ts-ignore
       visitDate: nowString,
       apiKey: localStorage.getItem('apiKey') ?? '',
     },
@@ -82,7 +78,7 @@ export default function TravelLogForm({
     setValue('latitude', state.currentMarkerLocation?.lat ?? 90);
     setValue('longitude', state.currentMarkerLocation?.lng ?? 180);
   }, [state.currentMarkerLocation, setValue]);
-  const onSubmit: SubmitHandler<TravelLog> = async (data) => {
+  const onSubmit: SubmitHandler<TravelLogRequest> = async (data) => {
     try {
       setFormError('');
       const response = await fetch('/api/logs', {

@@ -9,29 +9,29 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@hookform/resolvers": "^2.9.10",
-    "@next/font": "13.1.6",
-    "@types/node": "18.11.19",
-    "@types/react": "18.0.27",
-    "@types/react-dom": "18.0.10",
-    "daisyui": "^2.50.0",
-    "eslint": "8.33.0",
-    "eslint-config-next": "13.1.6",
+    "@hookform/resolvers": "^2.9.11",
+    "@types/node": "18.14.2",
+    "@types/react": "18.0.28",
+    "@types/react-dom": "18.0.11",
+    "daisyui": "^2.51.2",
+    "date-fns": "^2.29.3",
+    "eslint": "8.35.0",
+    "eslint-config-next": "13.2.1",
     "lambda-rate-limiter": "^3.0.1",
     "leaflet": "^1.9.3",
-    "mongodb": "^5.0.0",
-    "next": "13.1.6",
+    "mongodb": "^5.1.0",
+    "next": "13.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-hook-form": "^7.43.0",
-    "react-leaflet": "^4.2.0",
+    "react-hook-form": "^7.43.2",
+    "react-leaflet": "^4.2.1",
     "typescript": "4.9.5",
-    "zod": "^3.20.2"
+    "zod": "^3.20.6"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.3",
     "@types/lambda-rate-limiter": "^3.0.0",
-    "@types/leaflet": "^1.9.0",
+    "@types/leaflet": "^1.9.1",
     "autoprefixer": "^10.4.13",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
@@ -39,7 +39,7 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-prettier": "^4.2.1",
     "postcss": "^8.4.21",
-    "tailwindcss": "^3.2.4"
+    "tailwindcss": "^3.2.7"
   },
   "license": "MIT"
 }

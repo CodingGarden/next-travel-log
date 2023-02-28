@@ -22,21 +22,17 @@
 * [x] DEPLOY!
   * [x] Vercel
   * [x] Mongo Atlas
-* [ ] Loading spinner...
-* [ ] Zod Validators
+* [x] Zod Validators
   * Serialization / Deserialization
   * Timestamp
   * DB
   * Request / POST
+* [x] DB timestamps... UTC??
 * [ ] Edit existing log
 * [ ] Config object loader with validation
+* [ ] Loading spinner...
 * [ ] Cluster close points
-* [ ] DB timestamps... UTC??
-
-
-* [x] Say Hi
-* [x] Make a todo list
-* [x] What tech we using?
+* [ ] TODO: add map tiles attribution https://docs.mapbox.com/help/getting-started/attribution/#static--print
 
 # Stretch
 
@@ -47,3 +43,4 @@
 * Next Auth...
 * Search for locations
 * When adding marker, put on user current location
+* List logs in sidebar, click to zoom

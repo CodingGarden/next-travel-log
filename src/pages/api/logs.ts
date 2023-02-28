@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import {
-  TravelLog,
+  TravelLogEntry,
   TravelLogs,
-  TravelLogWithId,
+  TravelLogWithObjectId,
 } from '@/models/TravelLog/TravelLogs';
 import LambdaRateLimiter from 'lambda-rate-limiter';
 
@@ -30,7 +30,7 @@ const localhost = 'localhost';
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<
-    TravelLogWithId | TravelLogWithId[] | { message: string }
+    TravelLogWithObjectId | TravelLogWithObjectId[] | { message: string }
   >
 ) {
   try {
@@ -48,11 +48,12 @@ export default async function handler(
         if (req.body.apiKey !== process.env.API_KEY) {
           throw new ErrorWithStatusCode('Unauthorized.', 401);
         }
-        const validatedLog = await TravelLog.parseAsync(req.body);
-        // @ts-ignore
-        delete validatedLog.apiKey;
+        delete req.body.apiKey;
+        const validatedLog = await TravelLogEntry.parseAsync(req.body);
         const insertResult = await TravelLogs.insertOne(validatedLog);
-        await res.revalidate('/');
+        if (process.env.NODE_ENV === 'production') {
+          await res.revalidate('/');
+        }
         return res.status(200).json({
           ...validatedLog,
           _id: insertResult.insertedId,
@@ -70,6 +71,8 @@ export default async function handler(
     const error = e as Error;
     if (error instanceof ErrorWithStatusCode) {
       res.status(error.status);
+    } else {
+      res.status(500);
     }
     // TODO: handle zod errors
     // TODO: handle all errors in catch all middleware

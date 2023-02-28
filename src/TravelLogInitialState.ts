@@ -1,3 +1,5 @@
+'use client';
+
 import { TravelLogState } from '@/types/TravelLogProviderTypes';
 
 export default {
