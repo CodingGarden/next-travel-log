@@ -84,7 +84,7 @@ export default function TravelLogMap({ logs }: TravelLogMapProps) {
     [state.map, dispatch]
   );
   return (
-    <MapContainer className="w-full h-full" style={{ background: '#242525' }}>
+    <MapContainer worldCopyJump={true} className="w-full h-full" style={{ background: '#242525' }}>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url={process.env.NEXT_PUBLIC_MAP_TILE_URL || ''}
