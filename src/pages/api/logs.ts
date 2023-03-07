@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import serverConfig from '@/lib/serverConfig';
 
 import {
   TravelLogEntry,
@@ -6,10 +7,6 @@ import {
   TravelLogWithObjectId,
 } from '@/models/TravelLog/TravelLogs';
 import LambdaRateLimiter from 'lambda-rate-limiter';
-
-if (!process.env.API_KEY) {
-  throw new Error('API_KEY missing in env');
-}
 
 class ErrorWithStatusCode extends Error {
   status = 500;
@@ -45,13 +42,13 @@ export default async function handler(
 
     switch (req.method) {
       case 'POST': {
-        if (req.body.apiKey !== process.env.API_KEY) {
+        if (req.body.apiKey !== serverConfig.API_KEY) {
           throw new ErrorWithStatusCode('Unauthorized.', 401);
         }
         delete req.body.apiKey;
         const validatedLog = await TravelLogEntry.parseAsync(req.body);
         const insertResult = await TravelLogs.insertOne(validatedLog);
-        if (process.env.NODE_ENV === 'production') {
+        if (serverConfig.NODE_ENV === 'production') {
           await res.revalidate('/');
         }
         return res.status(200).json({
