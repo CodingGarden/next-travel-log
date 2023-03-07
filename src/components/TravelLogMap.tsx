@@ -123,7 +123,9 @@ export default function TravelLogMap({ logs }: TravelLogMapProps) {
             </div>
             <p>{log.description}</p>
             <p className="text-sm italic">
-              {new Date(log.visitDate).toLocaleDateString()}
+              {new Date(log.visitDate).toLocaleDateString(undefined, {
+                timeZone: 'UTC',
+              })}
             </p>
           </Popup>
         </Marker>
