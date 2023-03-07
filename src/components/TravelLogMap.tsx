@@ -74,11 +74,11 @@ export default function TravelLogMap({ logs }: TravelLogMapProps) {
       });
       dispatch({
         type: TravelLogActionType.SET_CURRENT_MARKER_LOCATION,
-        data: e.latlng,
+        data: e.latlng.wrap(),
       });
       if (state.map) {
         const zoomLevel = state.map.getZoom();
-        state.map.flyTo(e.latlng, zoomLevel > 5 ? zoomLevel : 5);
+        state.map.flyTo(e.latlng.wrap(), zoomLevel > 5 ? zoomLevel : 5);
       }
     },
     [state.map, dispatch]
@@ -101,7 +101,7 @@ export default function TravelLogMap({ logs }: TravelLogMapProps) {
             dragend(e) {
               dispatch({
                 type: TravelLogActionType.SET_CURRENT_MARKER_LOCATION,
-                data: e.target.getLatLng(),
+                data: e.target.getLatLng().wrap(),
               });
             },
           }}
