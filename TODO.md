@@ -28,8 +28,9 @@
   * DB
   * Request / POST
 * [x] DB timestamps... UTC??
+* [x] visitDate time zone error...
+* [x] Config object loader with validation
 * [ ] Edit existing log
-* [ ] Config object loader with validation
 * [ ] Loading spinner...
 * [ ] Cluster close points
 * [ ] TODO: add map tiles attribution https://docs.mapbox.com/help/getting-started/attribution/#static--print

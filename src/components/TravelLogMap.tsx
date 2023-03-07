@@ -11,10 +11,7 @@ import {
   TravelLogActionType,
   TravelLogDispatch,
 } from '@/types/TravelLogProviderTypes';
-
-if (!process.env.NEXT_PUBLIC_MAP_TILE_URL) {
-  throw new Error('Missing NEXT_PUBLIC_MAP_TILE_URL in .env.local');
-}
+import clientConfig from '@/lib/clientConfig';
 
 const createIcon = (fill = '#56BC58', iconSize = 32) => {
   return L.divIcon({
@@ -91,7 +88,7 @@ export default function TravelLogMap({ logs }: TravelLogMapProps) {
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url={process.env.NEXT_PUBLIC_MAP_TILE_URL || ''}
+        url={clientConfig.NEXT_PUBLIC_MAP_TILE_URL || ''}
       />
       <InitMap logs={logs} dispatch={dispatch} onMapClick={onMapClick} />
       {state.currentMarkerLocation && (
